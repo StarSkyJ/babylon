@@ -33,60 +33,7 @@ type IdentifiableStakingInfo struct {
 	OpReturnOutput        *wire.TxOut
 }
 
-func uint16ToBytes(v uint16) []byte {
-	var buf [2]byte
-	binary.BigEndian.PutUint16(buf[:], v)
-	return buf[:]
-}
 
-func uint16FromBytes(b []byte) (uint16, error) {
-	if len(b) != 2 {
-		return 0, fmt.Errorf("invalid uint16 bytes length: %d", len(b))
-	}
-
-	return binary.BigEndian.Uint16(b), nil
-}
-
-// V0OpReturnData represents the data that is embedded in the OP_RETURN output
-// It marshalls to exactly 71 bytes
-type V0OpReturnData struct {
-	MagicBytes                []byte
-	Version                   byte
-	StakerPublicKey           *XonlyPubKey
-	FinalityProviderPublicKey *XonlyPubKey
-	StakingTime               uint16
-}
-
-func NewV0OpReturnData(
-	magicBytes []byte,
-	stakerPublicKey []byte,
-	finalityProviderPublicKey []byte,
-	stakingTime []byte,
-) (*V0OpReturnData, error) {
-	if len(magicBytes) != MagicBytesLen {
-		return nil, fmt.Errorf("%s: invalid magic bytes length: %d, expected: %d", v0OpReturnCreationErrMsg, len(magicBytes), MagicBytesLen)
-	}
-
-	stakerKey, err := XOnlyPublicKeyFromBytes(stakerPublicKey)
-
-	if err != nil {
-		return nil, fmt.Errorf("%s:invalid staker public key:%w", v0OpReturnCreationErrMsg, err)
-	}
-
-	fpKey, err := XOnlyPublicKeyFromBytes(finalityProviderPublicKey)
-
-	if err != nil {
-		return nil, fmt.Errorf("%s:invalid finality provider public key:%w", v0OpReturnCreationErrMsg, err)
-	}
-
-	stakingTimeValue, err := uint16FromBytes(stakingTime)
-
-	if err != nil {
-		return nil, fmt.Errorf("%s:invalid staking time:%w", v0OpReturnCreationErrMsg, err)
-	}
-
-	return NewV0OpReturnDataFromParsed(magicBytes, stakerKey.PubKey, fpKey.PubKey, stakingTimeValue)
-}
 
 func NewV0OpReturnDataFromParsed(
 	magicBytes []byte,
