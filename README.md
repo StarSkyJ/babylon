@@ -52,18 +52,7 @@ To install the binary to system directories:
 make install
 ```
 
-## Documentation
 
-For user-facing documents, please visit
-[docs.babylonchain.io](https://docs.babylonchain.io). For technical documents
-about high-level designs of Babylon, please visit
-[docs/README.md](./docs/README.md). Each module under `x/` also contains a
-document about its design and implementation.
-
-## Joining the testnet
-
-Please follow the instructions on the [User
-Guides](https://docs.babylonchain.io/docs/user-guides/overview).
 
 ## Contributing
 
